@@ -9,6 +9,7 @@ from app.api.deps import db_session, current_user_id
 from app.config.settings import get_settings
 from app.database.models import ChannelOwnership, Entity, PendingEntity
 from app.schemas.api import ProposeEntity
+from app.economy.wallet import ensure_user
 from app.telegram.client import get_public_channel, check_admin, check_bot_admin
 
 router = APIRouter(prefix="/entities", tags=["entities"])
@@ -26,6 +27,7 @@ def normalize_username(value: str) -> str:
 
 @router.post("/propose")
 async def propose(payload: ProposeEntity, user_id: int = Depends(current_user_id), db: AsyncSession = Depends(db_session)):
+    await ensure_user(db, user_id, None, None)
     username = normalize_username(payload.username)
     bot = Bot(settings.bot_token)
     try:

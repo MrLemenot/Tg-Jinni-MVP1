@@ -3,6 +3,7 @@ import contextlib
 
 from fastapi import FastAPI, HTTPException
 from fastapi.responses import FileResponse
+from sqlalchemy.exc import SQLAlchemyError
 from fastapi.staticfiles import StaticFiles
 from sqlalchemy import text
 
@@ -45,6 +46,8 @@ async def startup():
     # Creates tables for MVP bootstrap. Replace with Alembic migrations before multi-version production deploys.
     async with engine.begin() as conn:
         await conn.run_sync(Base.metadata.create_all)
+    # A single Render instance is expected for the Telegram polling MVP.
+    # Multiple web workers would create competing getUpdates consumers.
     app.state.bot_task = asyncio.create_task(_run_bot_and_worker())
 
 

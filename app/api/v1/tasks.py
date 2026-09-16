@@ -6,6 +6,7 @@ from app.api.deps import db_session, current_user_id
 from app.config.settings import get_settings
 from app.database.models import Task
 from app.tasks.service import verify_subscription
+from app.economy.wallet import ensure_user
 
 router = APIRouter(prefix='/tasks', tags=['tasks'])
 settings = get_settings()
@@ -17,6 +18,7 @@ async def list_tasks(db: AsyncSession = Depends(db_session)):
 
 @router.post('/{task_id}/verify')
 async def verify_task(task_id: int, user_id: int = Depends(current_user_id), db: AsyncSession = Depends(db_session)):
+    await ensure_user(db, user_id, None, None)
     bot = Bot(settings.bot_token)
     try:
         ok = await verify_subscription(db, bot, user_id, task_id)

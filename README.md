@@ -56,3 +56,18 @@ Set `BOT_TOKEN`, `ADMIN_IDS`, and `DATABASE_URL` in the service Environment sett
 The Web Service runs FastAPI, the aiogram polling bot, and the subscription hold worker in the same process for the MVP. Run only one instance while using polling to avoid Telegram update conflicts.
 
 The Mini App authenticates API calls with Telegram `initData`; the old insecure `X-Telegram-Id` header is no longer accepted.
+
+
+## Render deployment
+
+Create one Docker Web Service from the repository root. Set these Environment Variables in Render (never commit real values):
+
+- `BOT_TOKEN` — Telegram bot token.
+- `ADMIN_IDS` — comma-separated Telegram user IDs for administrators.
+- `DATABASE_URL` — Render PostgreSQL **Internal Database URL**.
+- `WEBAPP_URL` — optional; leave empty to use Render's `RENDER_EXTERNAL_URL`.
+- `ENVIRONMENT=production`.
+
+The application normalizes Render's `postgresql://` URL to SQLAlchemy's `postgresql+asyncpg://` automatically. No `psycopg2` package is required.
+
+Do not deploy with multiple Uvicorn workers: Telegram long polling must have a single consumer.

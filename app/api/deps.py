@@ -7,12 +7,13 @@ from urllib.parse import parse_qsl
 from fastapi import Depends, Header, HTTPException
 
 from app.config.settings import get_settings
+from app.database.database import get_db
 
 
 def validate_telegram_init_data(init_data: str, max_age: int = 86400) -> dict:
     if not init_data:
         raise HTTPException(status_code=401, detail="Missing Telegram initData")
-    pairs = dict(parse_qsl(init_data, keep_blank_values=True))
+    pairs = dict(parse_qsl(init_data, keep_blank_values=True, strict_parsing=False))
     received_hash = pairs.pop("hash", None)
     if not received_hash:
         raise HTTPException(status_code=401, detail="Missing Telegram initData hash")
@@ -49,3 +50,7 @@ async def current_user_id(user: dict = Depends(current_user)) -> int:
         return int(user["id"])
     except (KeyError, TypeError, ValueError):
         raise HTTPException(status_code=401, detail="Invalid Telegram user")
+
+
+# Backward-compatible dependency name used by all API routers.
+db_session = get_db

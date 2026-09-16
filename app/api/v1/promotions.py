@@ -6,12 +6,14 @@ from app.api.deps import db_session, current_user_id
 from app.config.settings import get_settings
 from app.database.models import ChannelOwnership, Entity, Payment, PromotionCampaign
 from app.schemas.api import CreatePromotion
+from app.economy.wallet import ensure_user
 
 router = APIRouter(prefix='/promotions', tags=['promotions'])
 settings = get_settings()
 
 @router.post('')
 async def create(payload: CreatePromotion, user_id: int = Depends(current_user_id), db: AsyncSession = Depends(db_session)):
+    await ensure_user(db, user_id, None, None)
     entity = await db.get(Entity, payload.entity_id)
     ownership = (await db.execute(select(ChannelOwnership).where(ChannelOwnership.entity_id == payload.entity_id, ChannelOwnership.telegram_id == user_id, ChannelOwnership.verified.is_(True)))).scalar_one_or_none()
     if not entity or not ownership or not entity.is_active:

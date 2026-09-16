@@ -4,7 +4,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.api.deps import db_session, current_user_id
 from app.database.models import ShopItem, UserInventory, ShopTransaction
-from app.economy.wallet import spend_coins
+from app.economy.wallet import spend_coins, ensure_user
 
 router = APIRouter(prefix="/shop", tags=["shop"])
 
@@ -17,6 +17,7 @@ async def shop(db: AsyncSession = Depends(db_session)):
 
 @router.post("/{item_id}/buy")
 async def buy(item_id: int, user_id: int = Depends(current_user_id), db: AsyncSession = Depends(db_session)):
+    await ensure_user(db, user_id, None, None)
     item = await db.get(ShopItem, item_id)
     if not item or not item.is_active:
         raise HTTPException(404, "Item not found")

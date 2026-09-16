@@ -15,7 +15,7 @@ async def verify_subscription(db: AsyncSession, bot: Bot, user_id: int, task_id:
         row = UserTask(user_id=user_id, task_id=task_id, status='started', started_at=datetime.now(timezone.utc))
         db.add(row)
         await db.flush()
-    if row.status in {'completed', 'on_hold', 'rewarded'}:
+    if row.status in {'on_hold', 'rewarded', 'cancelled'}:
         return row.status == 'rewarded'
     if not await check_member(bot, task.channel_id, user_id):
         return False
