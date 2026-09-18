@@ -1,0 +1,20 @@
+[project]
+name = "tg-jinni-cloudflare"
+version = "5.0.0"
+description = "TG-Jinni Telegram bot + Mini App on Cloudflare Python Workers"
+requires-python = ">=3.13"
+dependencies = [
+  "fastapi>=0.116,<1",
+  "asyncpg>=0.31,<1",
+]
+
+[dependency-groups]
+dev = [
+  "pytest>=8.4,<9",
+  "workers-py",
+  "workers-runtime-sdk",
+]
+
+[tool.pytest.ini_options]
+pythonpath = ["."]
+addopts = "-q"

@@ -1,0 +1,36 @@
+{
+  "$schema": "./node_modules/wrangler/config-schema.json",
+  "name": "tg-jinni",
+  "main": "src/main.py",
+  "compatibility_date": "2026-09-18",
+  "compatibility_flags": ["python_workers"],
+  "assets": {
+    "directory": "./public",
+    "binding": "ASSETS",
+    "run_worker_first": ["/api/*", "/telegram/*", "/healthcheck", "/docs*", "/openapi.json"]
+  },
+  "hyperdrive": [
+    {
+      "binding": "HYPERDRIVE",
+      "id": "REPLACE_WITH_HYPERDRIVE_ID"
+    }
+  ],
+  "triggers": {
+    "crons": ["17 * * * *"]
+  },
+  "vars": {
+    "ADMIN_IDS": "",
+    "ENVIRONMENT": "production",
+    "TASK_HOLD_HOURS": "48",
+    "OWNERSHIP_RECHECK_HOURS": "24",
+    "PROMOTION_PACKAGE_PRICE_RUB": "180",
+    "PROMOTION_PACKAGE_IMPRESSIONS": "4500"
+  },
+  "secrets": {
+    "required": [
+      "BOT_TOKEN",
+      "TELEGRAM_WEBHOOK_SECRET",
+      "PAYMENT_PROVIDER_TOKEN"
+    ]
+  }
+}
