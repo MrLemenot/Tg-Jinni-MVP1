@@ -30,7 +30,6 @@
     "required": [
       "BOT_TOKEN",
       "TELEGRAM_WEBHOOK_SECRET",
-      "PAYMENT_PROVIDER_TOKEN"
     ]
   }
 }
