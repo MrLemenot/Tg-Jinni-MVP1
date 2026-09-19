@@ -26,10 +26,3 @@
     "PROMOTION_PACKAGE_PRICE_RUB": "180",
     "PROMOTION_PACKAGE_IMPRESSIONS": "4500"
   },
-  "secrets": {
-    "required": [
-      "BOT_TOKEN",
-      "TELEGRAM_WEBHOOK_SECRET",
-    ]
-  }
-}
