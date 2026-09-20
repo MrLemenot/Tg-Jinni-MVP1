@@ -1,13 +1,19 @@
 {
   "$schema": "./node_modules/wrangler/config-schema.json",
-  "name": "tg-jinni",
+  "name": "tg-jinni-mvp1",
   "main": "src/main.py",
   "compatibility_date": "2026-09-18",
   "compatibility_flags": ["python_workers"],
   "assets": {
     "directory": "./public",
     "binding": "ASSETS",
-    "run_worker_first": ["/api/*", "/telegram/*", "/healthcheck", "/docs*", "/openapi.json"]
+    "run_worker_first": [
+      "/api/*",
+      "/telegram/*",
+      "/healthcheck",
+      "/docs*",
+      "/openapi.json"
+    ]
   },
   "hyperdrive": [
     {
@@ -25,4 +31,5 @@
     "OWNERSHIP_RECHECK_HOURS": "24",
     "PROMOTION_PACKAGE_PRICE_RUB": "180",
     "PROMOTION_PACKAGE_IMPRESSIONS": "4500"
-  },
+  }
+}
