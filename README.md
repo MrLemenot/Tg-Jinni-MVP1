@@ -205,3 +205,5 @@ A campaign must never be activated by a client-side "demo" endpoint.
 - The game engine uses default question weights of `0.5` until channel-specific weights are populated. The schema already contains `entity_question_weights` for later tuning.
 - The payment provider token depends on the payment provider configured for the bot in BotFather; this project intentionally refuses to fake a successful payment.
 - The current shop contains one demonstration item; inventory/purchase routes can be extended without changing the Worker/Hyperdrive architecture.
+
+Cloudflare build refresh
